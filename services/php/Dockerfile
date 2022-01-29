@@ -28,11 +28,25 @@ RUN apk --no-cache add tzdata \
 RUN apk add gnu-libiconv libstdc++ --no-cache --repository http://${CONTAINER_PACKAGE_URL}/alpine/edge/community/ --allow-untrusted
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
+#composer1版本
+COPY ./composer_1.10.25.phar /usr/bin/composer
 
-# Install composer and change it's cache home
-RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \
-    && chmod +x /usr/bin/composer
+#可执行
+RUN chmod +x /usr/bin/composer
+
+# Install composer and change it's cache home  阿里云镜像
+#RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \
+#    && chmod +x /usr/bin/composer
+
 ENV COMPOSER_HOME=/tmp/composer
+
+# 阿里云镜像
+RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+
+#YII 前端依赖组件
+RUN composer global require "fxp/composer-asset-plugin:^1.2.0"
+
+
 
 # php image's www-data user uid & gid are 82, change them to 1000 (primary user)
 RUN apk --no-cache add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
