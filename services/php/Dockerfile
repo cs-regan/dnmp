@@ -44,7 +44,7 @@ ENV COMPOSER_HOME=/tmp/composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 
 #YII 前端依赖组件
-#RUN composer global require "fxp/composer-asset-plugin:^1.2.0"
+RUN composer global require "fxp/composer-asset-plugin:^1.2.0"
 
 
 #NPM 、YARN 前端组件
