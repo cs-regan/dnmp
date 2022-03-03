@@ -28,15 +28,14 @@ RUN apk --no-cache add tzdata \
 RUN apk add gnu-libiconv libstdc++ --no-cache --repository http://${CONTAINER_PACKAGE_URL}/alpine/edge/community/ --allow-untrusted
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
-#composer1版本
-COPY ./composer_1.10.25.phar /usr/bin/composer
 
-#可执行
-RUN chmod +x /usr/bin/composer
 
 # Install composer and change it's cache home  阿里云镜像
-#RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \
-#    && chmod +x /usr/bin/composer
+RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \
+    && chmod +x /usr/bin/composer
+
+#composer1版本
+RUN composer self-update --1
 
 ENV COMPOSER_HOME=/tmp/composer
 
