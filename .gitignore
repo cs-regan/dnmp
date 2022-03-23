@@ -8,3 +8,5 @@ www/*
 !www/localhost/
 logs/*
 data/mysql
+data/kafka_data
+data/zookeeper_data

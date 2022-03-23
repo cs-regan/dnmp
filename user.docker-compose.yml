@@ -81,5 +81,32 @@ services:
     networks:
       - default
 
+#  zookeeper:
+#    image: docker.io/bitnami/zookeeper:3.7
+#    container_name: zookeeper
+#    ports:
+#      - "${ZOOKEEPER_POST}:2181"
+#    volumes:
+#      - "${DATA_DIR}/zookeeper_data:/bitnami"
+#    environment:
+#      - ALLOW_ANONYMOUS_LOGIN=yes
+#    networks:
+#      - default
+#
+#  kafka:
+#    image: docker.io/bitnami/kafka:3
+#    container_name: kafka
+#    ports:
+#      - "${KAFKA_PORT}:9092"
+#    volumes:
+#      - "${DATA_DIR}/kafka_data:/bitnami"
+#    environment:
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#    depends_on:
+#      - zookeeper
+#    networks:
+#      - default
+
 networks:
   default:
