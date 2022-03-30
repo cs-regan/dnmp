@@ -10,3 +10,4 @@ logs/*
 data/mysql
 data/kafka_data
 data/zookeeper_data
+data/redis*
