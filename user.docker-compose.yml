@@ -38,6 +38,8 @@ services:
       - 9501
     extra_hosts:
       - "www.site1.com:172.17.0.1"
+      - "asyn.com:172.17.0.1"
+      - "utils.com:172.17.0.1"
     volumes:
       - ${SOURCE_DIR}:/www/:rw
       - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
@@ -65,7 +67,6 @@ services:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       TZ: "$TZ"
 
-
   redis:
     image: redis:${REDIS_VERSION}
     container_name: redis
@@ -81,140 +82,134 @@ services:
     networks:
       - default
 
-#  zookeeper:
-#    image: docker.io/bitnami/zookeeper:3.7
-#    container_name: zookeeper
-#    ports:
-#      - "${ZOOKEEPER_POST}:2181"
-#    volumes:
-#      - "${DATA_DIR}/zookeeper_data:/bitnami"
-#    environment:
-#      - ALLOW_ANONYMOUS_LOGIN=yes
-#    networks:
-#      - default
-#
-#  kafka:
-#    image: docker.io/bitnami/kafka:3
-#    container_name: kafka
-#    ports:
-#      - "${KAFKA_PORT}:9092"
-#    volumes:
-#      - "${DATA_DIR}/kafka_data:/bitnami"
-#    environment:
-#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-#      - ALLOW_PLAINTEXT_LISTENER=yes
-#    depends_on:
-#      - zookeeper
-#    networks:
-#      - default
+  #  zookeeper:
+  #    image: docker.io/bitnami/zookeeper:3.7
+  #    container_name: zookeeper
+  #    ports:
+  #      - "${ZOOKEEPER_POST}:2181"
+  #    volumes:
+  #      - "${DATA_DIR}/zookeeper_data:/bitnami"
+  #    environment:
+  #      - ALLOW_ANONYMOUS_LOGIN=yes
+  #    networks:
+  #      - default
+
+  #  kafka:
+  #    image: docker.io/bitnami/kafka:3
+  #    container_name: kafka
+  #    ports:
+  #      - "${KAFKA_PORT}:9092"
+  #    volumes:
+  #      - "${DATA_DIR}/kafka_data:/bitnami"
+  #    environment:
+  #      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+  #      - ALLOW_PLAINTEXT_LISTENER=yes
+  #    depends_on:
+  #      - zookeeper
+  #    networks:
+  #      - default
 
   #redis cluster
-#  redis-node-0:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-0
-#    #    ports:
-#    #      - "6389:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-0:/bitnami/redis/data
-#    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#    networks:
-#      - default
-#
-#  redis-node-1:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-1
-#    #    ports:
-#    #      - "6390:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-1:/bitnami/redis/data
-#    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#    networks:
-#      - default
-#
-#  redis-node-2:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-2
-#    #    ports:
-#    #      - "6390:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-2:/bitnami/redis/data
-#    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#    networks:
-#      - default
-#
-#  redis-node-3:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-3
-#    #    ports:
-#    #      - "6390:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-3:/bitnami/redis/data
-#    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#    networks:
-#      - default
-#
-#  redis-node-4:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-4
-#    #    ports:
-#    #      - "6390:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-4:/bitnami/redis/data
-#    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#    networks:
-#      - default
-#
-#  redis-node-5:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-5
-#    ports:
-#      - "6391:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-5:/bitnami/redis/data
-#    depends_on:
-#      - redis-node-0
-#      - redis-node-1
-#      - redis-node-2
-#      - redis-node-3
-#      - redis-node-4
-#    environment:
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      #      - REDIS_PASSWORD=123456
-#      #      - REDISCLI_AUTH=123456
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#      - REDIS_CLUSTER_REPLICAS=1
-#      - REDIS_CLUSTER_CREATOR=yes
-#    networks:
-#      - default
-#
-#volumes:
-#  redis-cluster_data-0:
-#    driver: local
-#  redis-cluster_data-1:
-#    driver: local
-#  redis-cluster_data-2:
-#    driver: local
-#  redis-cluster_data-3:
-#    driver: local
-#  redis-cluster_data-4:
-#    driver: local
-#  redis-cluster_data-5:
-#    driver: local
+  redis-node-0:
+    image: docker.io/bitnami/redis-cluster:6.0
+    container_name: redis-node-0
+    #    ports:
+    #      - "6389:6379"
+    volumes:
+      - ${DATA_DIR}/redis-cluster_data-0:/bitnami/redis/data
+    environment:
+      - REDIS_PASSWORD=123456
+      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+    networks:
+      - default
+
+  redis-node-1:
+    image: docker.io/bitnami/redis-cluster:6.0
+    container_name: redis-node-1
+    #    ports:
+    #      - "6390:6379"
+    volumes:
+      - ${DATA_DIR}/redis-cluster_data-1:/bitnami/redis/data
+    environment:
+      - REDIS_PASSWORD=123456
+      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+    networks:
+      - default
+
+  redis-node-2:
+    image: docker.io/bitnami/redis-cluster:6.0
+    container_name: redis-node-2
+    #    ports:
+    #      - "6390:6379"
+    volumes:
+      - ${DATA_DIR}/redis-cluster_data-2:/bitnami/redis/data
+    environment:
+      - REDIS_PASSWORD=123456
+      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+    networks:
+      - default
+
+  redis-node-3:
+    image: docker.io/bitnami/redis-cluster:6.0
+    container_name: redis-node-3
+    #    ports:
+    #      - "6390:6379"
+    volumes:
+      - ${DATA_DIR}/redis-cluster_data-3:/bitnami/redis/data
+    environment:
+      - REDIS_PASSWORD=123456
+      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+    networks:
+      - default
+
+  redis-node-4:
+    image: docker.io/bitnami/redis-cluster:6.0
+    container_name: redis-node-4
+    #    ports:
+    #      - "6390:6379"
+    volumes:
+      - ${DATA_DIR}/redis-cluster_data-4:/bitnami/redis/data
+    environment:
+      - REDIS_PASSWORD=123456
+      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+    networks:
+      - default
+
+  redis-node-5:
+    image: docker.io/bitnami/redis-cluster:6.0
+    container_name: redis-node-5
+    ports:
+      - "6391:6379"
+    volumes:
+      - ${DATA_DIR}/redis-cluster_data-5:/bitnami/redis/data
+    depends_on:
+      - redis-node-0
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+    environment:
+      - REDIS_PASSWORD=123456
+      - REDISCLI_AUTH=123456
+      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+      - REDIS_CLUSTER_REPLICAS=1
+      - REDIS_CLUSTER_CREATOR=yes
+    networks:
+      - default
+
+volumes:
+  redis-cluster_data-0:
+    driver: local
+  redis-cluster_data-1:
+    driver: local
+  redis-cluster_data-2:
+    driver: local
+  redis-cluster_data-3:
+    driver: local
+  redis-cluster_data-4:
+    driver: local
+  redis-cluster_data-5:
+    driver: local
 
 networks:
   default:
