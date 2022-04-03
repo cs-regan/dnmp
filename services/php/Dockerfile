@@ -29,7 +29,7 @@ RUN apk add gnu-libiconv libstdc++ --no-cache --repository http://${CONTAINER_PA
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Install composer and change it's cache home  阿里云镜像
-RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \
+RUN curl -o /usr/bin/composer https://qiniu.likephp.cn/composer_2.2.0.phar \
     && chmod +x /usr/bin/composer
 
 #composer1版本
