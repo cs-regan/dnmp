@@ -265,52 +265,52 @@ services:
   #    networks:
   #      - default
 
-  elasticsearch:
-    build:
-      context: ./services/elasticsearch
-      args:
-        ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}
-        ELASTICSEARCH_PLUGINS: ${ELASTICSEARCH_PLUGINS}
-    container_name: elasticsearch
-    environment:
-      - TZ=$TZ
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    volumes:
-      - ${DATA_DIR}/esdata:/usr/share/elasticsearch/data
-      - ${ELASTICSEARCH_CONF_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml
-    hostname: elasticsearch
-    restart: always
-    ports:
-      - "${ELASTICSEARCH_HOST_PORT_C}:9200"
-      - "${ELASTICSEARCH_HOST_PORT_S}:9300"
-
-  kibana:
-    image: kibana:${KIBANA_VERSION}
-    container_name: kibana
-    environment:
-      TZ: "$TZ"
-      elasticsearch.hosts: http://elasticsearch:9200
-      I18N_LOCALE: "${KIBANA_I18N_LOCALE}"
-    hostname: kibana
-    depends_on:
-      - elasticsearch
-    restart: always
-    ports:
-      - "${KIBANA_HOST}:5601"
-
-  logstash:
-    image: logstash:${LOGSTASH_VERSION}
-    container_name: logstash
-    hostname: logstash
-    restart: always
-    depends_on:
-      - elasticsearch
-    environment:
-      TZ: "$TZ"
-    ports:
-      - "${LOGSTASH_HOST_PORT_C}:9600"
-      - "${LOGSTASH_HOST_PORT_S}:5044"
+#  elasticsearch:
+#    build:
+#      context: ./services/elasticsearch
+#      args:
+#        ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}
+#        ELASTICSEARCH_PLUGINS: ${ELASTICSEARCH_PLUGINS}
+#    container_name: elasticsearch
+#    environment:
+#      - TZ=$TZ
+#      - discovery.type=single-node
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    volumes:
+#      - ${DATA_DIR}/esdata:/usr/share/elasticsearch/data
+#      - ${ELASTICSEARCH_CONF_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml
+#    hostname: elasticsearch
+#    restart: always
+#    ports:
+#      - "${ELASTICSEARCH_HOST_PORT_C}:9200"
+#      - "${ELASTICSEARCH_HOST_PORT_S}:9300"
+#
+#  kibana:
+#    image: kibana:${KIBANA_VERSION}
+#    container_name: kibana
+#    environment:
+#      TZ: "$TZ"
+#      elasticsearch.hosts: http://elasticsearch:9200
+#      I18N_LOCALE: "${KIBANA_I18N_LOCALE}"
+#    hostname: kibana
+#    depends_on:
+#      - elasticsearch
+#    restart: always
+#    ports:
+#      - "${KIBANA_HOST}:5601"
+#
+#  logstash:
+#    image: logstash:${LOGSTASH_VERSION}
+#    container_name: logstash
+#    hostname: logstash
+#    restart: always
+#    depends_on:
+#      - elasticsearch
+#    environment:
+#      TZ: "$TZ"
+#    ports:
+#      - "${LOGSTASH_HOST_PORT_C}:9600"
+#      - "${LOGSTASH_HOST_PORT_S}:5044"
 
 #  node:
 #    image: node:${NODE_VERSION}
@@ -387,72 +387,29 @@ services:
 #    #      - "6389:6379"
 #    volumes:
 #      - ${DATA_DIR}/redis-cluster_data-0:/bitnami/redis/data
+#    restart: always
 #    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+#      - REDIS_PASSWORD=123456
+#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2
 #    networks:
 #      - default
 #
 #  redis-node-1:
 #    image: docker.io/bitnami/redis-cluster:6.0
 #    container_name: redis-node-1
-#    #    ports:
-#    #      - "6390:6379"
+#    restart: always
 #    volumes:
 #      - ${DATA_DIR}/redis-cluster_data-1:/bitnami/redis/data
 #    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
+#      - REDIS_PASSWORD=123456
+#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2
 #    networks:
 #      - default
 #
 #  redis-node-2:
 #    image: docker.io/bitnami/redis-cluster:6.0
 #    container_name: redis-node-2
-#    #    ports:
-#    #      - "6390:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-2:/bitnami/redis/data
-#    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#    networks:
-#      - default
-#
-#  redis-node-3:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-3
-#    #    ports:
-#    #      - "6390:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-3:/bitnami/redis/data
-#    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#    networks:
-#      - default
-#
-#  redis-node-4:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-4
-#    #    ports:
-#    #      - "6390:6379"
-#    volumes:
-#      - ${DATA_DIR}/redis-cluster_data-4:/bitnami/redis/data
-#    environment:
-#      #      - REDIS_PASSWORD=123456
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#    networks:
-#      - default
-#
-#  redis-node-5:
-#    image: docker.io/bitnami/redis-cluster:6.0
-#    container_name: redis-node-5
+#    restart: always
 #    ports:
 #      - "6391:6379"
 #    volumes:
@@ -460,15 +417,11 @@ services:
 #    depends_on:
 #      - redis-node-0
 #      - redis-node-1
-#      - redis-node-2
-#      - redis-node-3
-#      - redis-node-4
 #    environment:
-#      - ALLOW_EMPTY_PASSWORD=yes
-#      #      - REDIS_PASSWORD=123456
-#      #      - REDISCLI_AUTH=123456
-#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5
-#      - REDIS_CLUSTER_REPLICAS=1
+#      - REDIS_PASSWORD=123456
+#      - REDISCLI_AUTH=123456
+#      - REDIS_NODES=redis-node-0 redis-node-1 redis-node-2
+#      - REDIS_CLUSTER_REPLICAS=0
 #      - REDIS_CLUSTER_CREATOR=yes
 #    networks:
 #      - default
@@ -479,12 +432,6 @@ services:
 #  redis-cluster_data-1:
 #    driver: local
 #  redis-cluster_data-2:
-#    driver: local
-#  redis-cluster_data-3:
-#    driver: local
-#  redis-cluster_data-4:
-#    driver: local
-#  redis-cluster_data-5:
 #    driver: local
 
 networks:
