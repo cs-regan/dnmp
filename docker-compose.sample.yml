@@ -72,6 +72,10 @@ services:
       - SYS_PTRACE
     networks:
       - default
+#    以下是容器vpn启动
+#    privileged: true
+#    command:
+#      - cd /www/vpn && nohup openvpn --config /www/vpn/client.ovpn &
 
   #  php56:
   #    build:
