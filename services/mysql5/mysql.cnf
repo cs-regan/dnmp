@@ -28,3 +28,7 @@ block_encryption_mode   = 'aes-256-ecb'
 
 [mysql]
 default-character-set   = utf8mb4
+
+[mysqld]
+log-bin=mysql-bin
+server-id=1

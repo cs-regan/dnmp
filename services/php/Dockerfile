@@ -11,6 +11,7 @@ RUN if [ $CONTAINER_PACKAGE_URL ] ; then sed -i "s/dl-cdn.alpinelinux.org/${CONT
 
 COPY ./extensions /tmp/extensions
 WORKDIR /tmp/extensions
+
 RUN chmod +x install.sh \
     && sh install.sh \
     && rm -rf /tmp/extensions
